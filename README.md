@@ -37,7 +37,7 @@ Sibling checkout of private `coil-deflate`, plus `--root` so the compiler can lo
 deflate = { git = "https://github.com/ardax-corp/coil-deflate.git" }
 ```
 
-`{ git }` is the parseable form. The compiler does not read `coil.toml` or follow git deps; pass `--root ../coil-deflate/src`.
+`{ git }` is the parseable form. The compiler does not read `coil.toml` or follow git deps; pass `--root ../coil-deflate/src` (CI uses `--root vendor/coil-deflate/src` because Actions `GITHUB_TOKEN` cannot clone private `coil-deflate`).
 
 ## License
 
