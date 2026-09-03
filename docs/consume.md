@@ -2,9 +2,7 @@
 
 This package is `gzip`. `use gzip::{compress, decompress, Gzip, GzipError}` resolves from `src/gzip.hy`. This repo is **private** (`https://github.com/ardax-corp/coil-gzip.git`); clone with credentials that can read it. There is no native/FFI dep.
 
-Raw DEFLATE is [`coil-deflate`](https://github.com/ardax-corp/coil-deflate) (`https://github.com/ardax-corp/coil-deflate.git`), also private.
-
-GitHub Actions `GITHUB_TOKEN` cannot clone that private repo (checkout fails with `repository not found`). CI therefore uses a documented pin of `src/deflate.hy` under [`vendor/coil-deflate`](../vendor/coil-deflate) at `07f945931f89bd97281513b50f7cbfb35111c872`. Prefer a sibling clone locally. Neither repo is public.
+Raw DEFLATE is [`coil-deflate`](https://github.com/ardax-corp/coil-deflate) (`https://github.com/ardax-corp/coil-deflate.git`).
 
 Coil-to-Coil deps will be spool-owned once a public `spool` CLI exists. Until then `{ git }` parses and the pin is `coil.lock` `rev` + `content_hash`.
 
@@ -18,10 +16,10 @@ Clone this repo next to `coil-deflate`. Pass the deflate sources on the compiler
 coil test --root ../coil-deflate/src
 ```
 
-CI runs:
+CI checks out deflate under `.ci/coil-deflate` and runs:
 
 ```
-coil test --root vendor/coil-deflate/src
+coil test --root .ci/coil-deflate/src
 ```
 
 `[module] roots` in `coil.toml` is spool schema (same sibling path). It is not a compiler input.
@@ -44,7 +42,7 @@ This repo has no tags. The pin is `coil.lock` `rev` + `content_hash`. Omit `tag`
 name = 'deflate'
 git = 'https://github.com/ardax-corp/coil-deflate.git'
 rev = '07f945931f89bd97281513b50f7cbfb35111c872'
-content_hash = '<tree SHA>'
+content_hash = '8bfe332cc777f22ea83f06603d8d80175bac57ea'
 ```
 
 `rev` is the commit. `content_hash` is that commit's git tree (`git rev-parse 'HEAD^{tree}'`). Replace both when you move the pin.
