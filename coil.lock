@@ -1,0 +1,6 @@
+# spool lockfile v1
+[[package]]
+name = 'deflate'
+git = 'https://github.com/ardax-corp/coil-deflate.git'
+rev = '07f945931f89bd97281513b50f7cbfb35111c872'
+content_hash = '8bfe332cc777f22ea83f06603d8d80175bac57ea'

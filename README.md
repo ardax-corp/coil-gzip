@@ -30,14 +30,14 @@ let out = decompress(gz)?;
 
 ## Consume
 
-Sibling checkout of private `coil-deflate`, plus `--root` so the compiler can load `deflate.hy`. See [docs/consume.md](docs/consume.md).
+Sibling checkout of `coil-deflate`, plus `--root` so the compiler can load `deflate.hy`. See [docs/consume.md](docs/consume.md).
 
 ```toml
 [dependencies]
 deflate = { git = "https://github.com/ardax-corp/coil-deflate.git" }
 ```
 
-`{ git }` is the parseable form. The compiler does not read `coil.toml` or follow git deps; pass `--root ../coil-deflate/src` (CI uses `--root vendor/coil-deflate/src` because Actions `GITHUB_TOKEN` cannot clone private `coil-deflate`).
+`{ git }` is the parseable form. The compiler does not read `coil.toml` or follow git deps; pass `--root ../coil-deflate/src`.
 
 ## License
 
