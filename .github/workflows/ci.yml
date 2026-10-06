@@ -7,7 +7,6 @@ on:
     branches: [main]
 
 env:
-  CARGO_TERM_COLOR: always
   CI: "true"
 
 jobs:
@@ -16,13 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Checkout coil-lang
-        uses: actions/checkout@v4
-        with:
-          repository: ardax-corp/coil-lang
-          path: .ci/coil-lang
-          submodules: false
-
       - name: Checkout coil-deflate
         uses: actions/checkout@v4
         with:
@@ -30,21 +22,10 @@ jobs:
           path: .ci/coil-deflate
           ref: 07f945931f89bd97281513b50f7cbfb35111c872
 
-      - name: Install system deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libffi-dev build-essential
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: .ci/coil-lang
-
-      - name: Build coil
-        run: cargo build --bin coil --manifest-path .ci/coil-lang/Cargo.toml
+      # coil comes from the coil-lang `edge` release (a snapshot of its main,
+      # rebuilt after every green coil-lang CI run) instead of a source build.
+      - name: Install coil (edge)
+        uses: ardax-corp/coil-lang/.github/actions/setup-coil@main
 
       - name: Language harness (`coil test`)
-        run: .ci/coil-lang/target/debug/coil test --root .ci/coil-deflate/src
+        run: coil test --root .ci/coil-deflate/src
