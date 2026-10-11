@@ -26,18 +26,11 @@ let out = decompress(gz)?;
 | Path | Role |
 |------|------|
 | `src/gzip.hy` | `Gzip`, `GzipError`, CRC32, member wrap |
-| `coil.toml` | `[package] name = "gzip"` so `use gzip::{…}` resolves |
+| `coil.toml` | spool manifest (`[package] name = "gzip"`); coil does not read it |
 
 ## Consume
 
-Sibling checkout of `coil-deflate`, plus `--root` so the compiler can load `deflate.hy`. See [docs/consume.md](docs/consume.md).
-
-```toml
-[dependencies]
-deflate = { git = "https://github.com/ardax-corp/coil-deflate.git" }
-```
-
-`{ git }` is the parseable form. The compiler does not read `coil.toml` or follow git deps; pass `--root ../coil-deflate/src`.
+Sibling checkouts of this repo and `coil-deflate`, plus `--root` for each so the compiler can load `gzip.hy` and `deflate.hy`. coil reads no `coil.toml`. `spool add gzip --git https://github.com/ardax-corp/coil-gzip.git --rev <commit SHA>` is the spool path once coil-deflate has a tag to resolve. See [docs/consume.md](docs/consume.md).
 
 ## License
 

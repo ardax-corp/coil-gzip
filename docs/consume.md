@@ -4,9 +4,17 @@ This package is `gzip`. `use gzip::{compress, decompress, Gzip, GzipError}` reso
 
 Raw DEFLATE is [`coil-deflate`](https://github.com/ardax-corp/coil-deflate) (`https://github.com/ardax-corp/coil-deflate.git`).
 
-Coil-to-Coil deps will be spool-owned once a public `spool` CLI exists. Until then `{ git }` parses and the pin is `coil.lock` `rev` + `content_hash`.
+The Coil compiler does **not** read `coil.toml` or `coil.lock`. Module search is `--root` (repeatable) plus default `src`. It does not follow path or git deps.
 
-The Coil compiler does **not** read `coil.toml`. Module search is `--root` (repeatable) plus default `src`. It does not follow path or git deps.
+## Depend on it
+
+With [spool](https://github.com/ardax-corp/spool):
+
+```bash
+spool add gzip --git https://github.com/ardax-corp/coil-gzip.git --rev <commit SHA>
+```
+
+spool records the dep, writes `coil.lock` (`rev` + `content_hash`), links `.spool/deps/gzip`, resolves this repo's `deflate` dependency, and passes `--root` for each plus coil-stdlib to `coil`. Neither repo has tags yet, and this repo's `coil.toml` declares `deflate` with no `version` or `rev`, so the transitive resolve finds no matching tag. Until coil-deflate is tagged (or pinned here), use the sibling checkout.
 
 ## Sibling checkout
 
@@ -22,30 +30,7 @@ CI checks out deflate under `.ci/coil-deflate` and runs:
 coil test --root .ci/coil-deflate/src
 ```
 
-`[module] roots` in `coil.toml` is spool schema (same sibling path). It is not a compiler input.
-
-## Git dep and coil.lock
-
-`{ git }` is the parseable form. `version` is optional schema, not a tag. `rev` on the dep is stored only. Do not run `spool add`. There is no public spool CLI.
-
-```toml
-[dependencies]
-deflate = { git = "https://github.com/ardax-corp/coil-deflate.git" }
-gzip = { git = "https://github.com/ardax-corp/coil-gzip.git" }
-```
-
-This repo has no tags. The pin is `coil.lock` `rev` + `content_hash`. Omit `tag`. Use sibling checkout until spool materializes `.spool/deps`. The compiler does not read `coil.lock` and does not inject roots.
-
-```
-# spool lockfile v1
-[[package]]
-name = 'deflate'
-git = 'https://github.com/ardax-corp/coil-deflate.git'
-rev = '07f945931f89bd97281513b50f7cbfb35111c872'
-content_hash = '8bfe332cc777f22ea83f06603d8d80175bac57ea'
-```
-
-`rev` is the commit. `content_hash` is that commit's git tree (`git rev-parse 'HEAD^{tree}'`). Replace both when you move the pin.
+A consumer passes both: `--root ../coil-gzip/src --root ../coil-deflate/src`. `[module] roots` in `coil.toml` is read by spool, not by coil.
 
 ## Call compress / decompress
 
