@@ -1,4 +1,5 @@
 // Round-trip gzip compress/decompress and header magic.
+use tests::assert;
 use string::{to_bytes};
 use gzip::{compress, decompress, Gzip, GzipError};
 
@@ -61,26 +62,26 @@ fn repeat_byte(byte c, int n) -> Vec<byte> {
 
 test("empty roundtrip") {
     let src: Vec<byte> = Vec::new();
-    assert(roundtrip(src), "empty")?;
+    assert!(roundtrip(src), "empty");
 }
 
 test("hello roundtrip") {
-    assert(roundtrip(to_bytes("hello")), "hello")?;
+    assert!(roundtrip(to_bytes("hello")), "hello");
 }
 
 test("repeated bytes roundtrip") {
-    assert(roundtrip(repeat_byte("a" as byte, 100)), "repeats")?;
+    assert!(roundtrip(repeat_byte("a" as byte, 100)), "repeats");
 }
 
 test("pangram roundtrip") {
-    assert(roundtrip(to_bytes("The quick brown fox jumps over the lazy dog")), "pangram")?;
+    assert!(roundtrip(to_bytes("The quick brown fox jumps over the lazy dog")), "pangram");
 }
 
 test("gzip magic 1f 8b") {
     let (ok, gz) = take_ok(compress(to_bytes("hello")));
-    assert(ok, "compress")?;
-    assert(len(gz) >= 10, "header")?;
-    assert((gz[0] as int) == 31, "id1")?;
-    assert((gz[1] as int) == 139, "id2")?;
-    assert((gz[2] as int) == 8, "cm")?;
+    assert!(ok, "compress");
+    assert!(len(gz) >= 10, "header");
+    assert!((gz[0] as int) == 31, "id1");
+    assert!((gz[1] as int) == 139, "id2");
+    assert!((gz[2] as int) == 8, "cm");
 }
