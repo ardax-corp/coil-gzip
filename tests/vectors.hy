@@ -1,4 +1,5 @@
 // Known gzip members, CRC/ISIZE checks, and error cases.
+use tests::assert;
 use string::{to_bytes};
 use gzip::{compress, decompress, crc32, GzipError};
 
@@ -69,13 +70,13 @@ test("python gzip empty") {
     xs.push(0);
     push_all(raw, xs);
     let (ok, out) = take_ok(decompress(raw));
-    assert(ok, "inflate")?;
-    assert(len(out) == 0, "empty")?;
+    assert!(ok, "inflate");
+    assert!(len(out) == 0, "empty");
 }
 
 test("crc32 hello") {
     let want: int = 907060870;
-    assert(crc32(to_bytes("hello")) == want, "crc hello")?;
+    assert!(crc32(to_bytes("hello")) == want, "crc hello");
 }
 
 test("python gzip hello") {
@@ -108,8 +109,8 @@ test("python gzip hello") {
     xs.push(0);
     push_all(raw, xs);
     let (ok, out) = take_ok(decompress(raw));
-    assert(ok, "inflate")?;
-    assert(eq_bytes(out, to_bytes("hello")), "hello")?;
+    assert!(ok, "inflate");
+    assert!(eq_bytes(out, to_bytes("hello")), "hello");
 }
 
 test("gzip fname header") {
@@ -141,13 +142,13 @@ test("gzip fname header") {
     xs.push(0);
     push_all(raw, xs);
     let (ok, out) = take_ok(decompress(raw));
-    assert(ok, "inflate")?;
-    assert(eq_bytes(out, to_bytes("hi")), "hi")?;
+    assert!(ok, "inflate");
+    assert!(eq_bytes(out, to_bytes("hi")), "hi");
 }
 
 test("truncated member is invalid") {
     let (ok, gz) = take_ok(compress(to_bytes("hello")));
-    assert(ok, "compress")?;
+    assert!(ok, "compress");
     let cut: Vec<byte> = Vec::new();
     let i = 0;
     let n = len(gz) - 1;
@@ -155,14 +156,14 @@ test("truncated member is invalid") {
         cut.push(gz[i]);
         i = i + 1;
     }
-    assert(is_invalid(decompress(cut)), "trunc")?;
+    assert!(is_invalid(decompress(cut)), "trunc");
 }
 
 test("truncated header is invalid") {
     let raw: Vec<byte> = Vec::new();
     raw.push(31 as byte);
     raw.push(139 as byte);
-    assert(is_invalid(decompress(raw)), "hdr")?;
+    assert!(is_invalid(decompress(raw)), "hdr");
 }
 
 test("bad magic is invalid") {
@@ -174,14 +175,14 @@ test("bad magic is invalid") {
         raw.push(0 as byte);
         i = i + 1;
     }
-    assert(is_invalid(decompress(raw)), "magic")?;
+    assert!(is_invalid(decompress(raw)), "magic");
 }
 
 test("bad crc is invalid") {
     let (ok, gz) = take_ok(compress(to_bytes("hello")));
-    assert(ok, "compress")?;
+    assert!(ok, "compress");
     let n = len(gz);
-    assert(n >= 8, "trailer")?;
+    assert!(n >= 8, "trailer");
     let bad: Vec<byte> = Vec::new();
     let i = 0;
     while i < n {
@@ -191,10 +192,10 @@ test("bad crc is invalid") {
     let last = n - 8;
     let flipped = (bad[last] as int) ^ 1;
     bad[last] = flipped as byte;
-    assert(is_invalid(decompress(bad)), "crc")?;
+    assert!(is_invalid(decompress(bad)), "crc");
 }
 
 test("empty input is invalid") {
     let empty: Vec<byte> = Vec::new();
-    assert(is_invalid(decompress(empty)), "empty")?;
+    assert!(is_invalid(decompress(empty)), "empty");
 }
