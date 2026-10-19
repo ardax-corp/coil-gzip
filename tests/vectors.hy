@@ -14,11 +14,11 @@ fn is_invalid(Result<Vec<byte>, GzipError> r) -> bool {
 }
 
 fn eq_bytes(Vec<byte> a, Vec<byte> b) -> bool {
-    if len(a) != len(b) {
+    if a.len() != b.len() {
         return false;
     }
     let i = 0;
-    while i < len(a) {
+    while i < a.len() {
         if a[i] != b[i] {
             return false;
         }
@@ -39,7 +39,7 @@ fn take_ok(Result<Vec<byte>, GzipError> r) -> (bool, Vec<byte>) {
 
 fn push_all(Vec<byte> dst, Vec<int> xs) {
     let i = 0;
-    while i < len(xs) {
+    while i < xs.len() {
         dst.push(xs[i] as byte);
         i = i + 1;
     }
@@ -71,7 +71,7 @@ test("python gzip empty") {
     push_all(raw, xs);
     let (ok, out) = take_ok(decompress(raw));
     assert!(ok, "inflate");
-    assert!(len(out) == 0, "empty");
+    assert!(out.len() == 0, "empty");
 }
 
 test("crc32 hello") {
@@ -151,7 +151,7 @@ test("truncated member is invalid") {
     assert!(ok, "compress");
     let cut: Vec<byte> = Vec::new();
     let i = 0;
-    let n = len(gz) - 1;
+    let n = gz.len() - 1;
     while i < n {
         cut.push(gz[i]);
         i = i + 1;
@@ -181,7 +181,7 @@ test("bad magic is invalid") {
 test("bad crc is invalid") {
     let (ok, gz) = take_ok(compress(to_bytes("hello")));
     assert!(ok, "compress");
-    let n = len(gz);
+    let n = gz.len();
     assert!(n >= 8, "trailer");
     let bad: Vec<byte> = Vec::new();
     let i = 0;

@@ -4,11 +4,11 @@ use string::{to_bytes};
 use gzip::{compress, decompress, Gzip, GzipError};
 
 fn eq_bytes(Vec<byte> a, Vec<byte> b) -> bool {
-    if len(a) != len(b) {
+    if a.len() != b.len() {
         return false;
     }
     let i = 0;
-    while i < len(a) {
+    while i < a.len() {
         if a[i] != b[i] {
             return false;
         }
@@ -80,7 +80,7 @@ test("pangram roundtrip") {
 test("gzip magic 1f 8b") {
     let (ok, gz) = take_ok(compress(to_bytes("hello")));
     assert!(ok, "compress");
-    assert!(len(gz) >= 10, "header");
+    assert!(gz.len() >= 10, "header");
     assert!((gz[0] as int) == 31, "id1");
     assert!((gz[1] as int) == 139, "id2");
     assert!((gz[2] as int) == 8, "cm");

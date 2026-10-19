@@ -33,7 +33,7 @@ fn crc32(Vec<byte> data) -> int {
     let mask = u32_mask();
     let crc = mask;
     let i = 0;
-    while i < len(data) {
+    while i < data.len() {
         crc = crc ^ (data[i] as int);
         let b = 0;
         let eight: int = 8;
@@ -77,7 +77,7 @@ fn get_u32_le(Vec<byte> data, int i) -> int {
 fn skip_zero_string(Vec<byte> data, int i) -> Result<int, GzipError> {
     let p = i;
     while true {
-        if p >= len(data) {
+        if p >= data.len() {
             raise invalid("truncated header");
         }
         let c = data[p] as int;
@@ -89,7 +89,7 @@ fn skip_zero_string(Vec<byte> data, int i) -> Result<int, GzipError> {
 }
 
 fn header_end(Vec<byte> data) -> Result<int, GzipError> {
-    if len(data) < 10 {
+    if data.len() < 10 {
         raise invalid("truncated header");
     }
     if (data[0] as int) != 31 {
@@ -112,13 +112,13 @@ fn header_end(Vec<byte> data) -> Result<int, GzipError> {
     }
     let i = 10;
     if (flg & fextra) != 0 {
-        if i + 2 > len(data) {
+        if i + 2 > data.len() {
             raise invalid("truncated extra");
         }
         let eight: int = 8;
         let xlen = (data[i] as int) | ((data[i + 1] as int) << eight);
         i = i + 2 + xlen;
-        if i > len(data) {
+        if i > data.len() {
             raise invalid("truncated extra");
         }
     }
@@ -129,7 +129,7 @@ fn header_end(Vec<byte> data) -> Result<int, GzipError> {
         i = skip_zero_string(data, i)?;
     }
     if (flg & fhcrc) != 0 {
-        if i + 2 > len(data) {
+        if i + 2 > data.len() {
             raise invalid("truncated hcrc");
         }
         i = i + 2;
@@ -184,22 +184,22 @@ impl Gzip {
         out.push(0 as byte);
         out.push(255 as byte);
         let i = 0;
-        while i < len(body) {
+        while i < body.len() {
             out.push(body[i]);
             i = i + 1;
         }
         put_u32_le(out, crc32(data));
-        put_u32_le(out, len(data) & u32_mask());
+        put_u32_le(out, data.len() & u32_mask());
         return out;
     }
 
     /// Parse one gzip member. Trailer is the last 8 bytes (CRC32 + ISIZE).
     pub static fn decompress(Vec<byte> data) -> Result<Vec<byte>, GzipError> {
         let start = header_end(data)?;
-        if start + 8 > len(data) {
+        if start + 8 > data.len() {
             raise invalid("truncated member");
         }
-        let trail = len(data) - 8;
+        let trail = data.len() - 8;
         let body = slice_bytes(data, start, trail);
         let out = inflate_raw(body)?;
         let crc_got = get_u32_le(data, trail);
@@ -207,7 +207,7 @@ impl Gzip {
         if crc_got != crc32(out) {
             raise invalid("bad crc");
         }
-        if isize_got != (len(out) & u32_mask()) {
+        if isize_got != (out.len() & u32_mask()) {
             raise invalid("bad isize");
         }
         return out;
