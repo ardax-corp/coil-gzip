@@ -26,7 +26,7 @@ jobs:
         with:
           repository: ardax-corp/coil-deflate
           path: .ci/coil-deflate
-          ref: 07f945931f89bd97281513b50f7cbfb35111c872
+          ref: 11e6541fef7a0ee8bdaab705efa17417ec280e7f
 
       # coil comes from the coil-lang `edge` release (a snapshot of its main,
       # rebuilt after every green coil-lang CI run) instead of a source build.
