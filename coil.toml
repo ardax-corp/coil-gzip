@@ -6,4 +6,4 @@ version = "0.1.0"
 roots = ["./src", "../coil-deflate/src"]
 
 [dependencies]
-deflate = { git = "https://github.com/ardax-corp/coil-deflate.git" }
+deflate = { git = "https://github.com/ardax-corp/coil-deflate.git", version = "latest" }
