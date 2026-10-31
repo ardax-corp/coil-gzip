@@ -32,7 +32,7 @@ To run this repo's own tests from a checkout with `coil-deflate` as a sibling:
 coil test --root ../coil-deflate/src --root ../coil-stdlib/src
 ```
 
-CI does the same with deflate checked out under `.ci/coil-deflate`. `[module] roots` in `coil.toml` is read by spool, not by coil.
+coil reads no `coil.toml`; spool turns its dependencies into these `--root`s.
 
 ## Call compress / decompress
 

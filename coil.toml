@@ -3,7 +3,7 @@ name = "gzip"
 version = "0.1.0"
 
 [module]
-roots = ["./src", "../coil-deflate/src"]
+roots = ["./src"]
 
 [dependencies]
 deflate = { git = "https://github.com/ardax-corp/coil-deflate.git", version = "latest" }
