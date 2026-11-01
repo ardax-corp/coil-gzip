@@ -1,6 +1,6 @@
 # Consuming coil-gzip
 
-This package is `gzip`. `use gzip::{compress, decompress, crc32, Gzip, GzipError}` resolves from `src/gzip.hy`. The repo is `https://github.com/ardax-corp/coil-gzip.git`. There is no native/FFI dep.
+This package is `gzip`. `use gzip::{compress, decompress, crc32, Gzip, GzipError}` resolves from `src/gzip.coil`. The repo is `https://github.com/ardax-corp/coil-gzip.git`. There is no native/FFI dep.
 
 Raw DEFLATE comes from [`coil-deflate`](https://github.com/ardax-corp/coil-deflate) (`https://github.com/ardax-corp/coil-deflate.git`), package `deflate`.
 
@@ -23,7 +23,7 @@ Clone both repos next to your project and pass a root for each:
 ```bash
 git clone https://github.com/ardax-corp/coil-gzip.git ../coil-gzip
 git clone https://github.com/ardax-corp/coil-deflate.git ../coil-deflate
-coil --root ../coil-gzip/src --root ../coil-deflate/src --root ../coil-stdlib/src main.hy
+coil --root ../coil-gzip/src --root ../coil-deflate/src --root ../coil-stdlib/src main.coil
 ```
 
 To run this repo's own tests from a checkout with `coil-deflate` as a sibling:
@@ -36,7 +36,7 @@ coil reads no `coil.toml`; spool turns its dependencies into these `--root`s.
 
 ## Call compress / decompress
 
-Signatures are in [`src/gzip.hy`](../src/gzip.hy). Call patterns are in [`tests/roundtrip.hy`](../tests/roundtrip.hy) and [`tests/vectors.hy`](../tests/vectors.hy).
+Signatures are in [`src/gzip.coil`](../src/gzip.coil). Call patterns are in [`tests/roundtrip.coil`](../tests/roundtrip.coil) and [`tests/vectors.coil`](../tests/vectors.coil).
 
 ```coil
 use string::{to_bytes};

@@ -22,7 +22,7 @@ fn main() {
 }
 ```
 
-Run it with `coil --root ../coil-gzip/src --root ../coil-deflate/src --root ../coil-stdlib/src main.hy` (or `spool run`).
+Run it with `coil --root ../coil-gzip/src --root ../coil-deflate/src --root ../coil-stdlib/src main.coil` (or `spool run`).
 
 ## API
 
@@ -40,7 +40,7 @@ Run it with `coil --root ../coil-gzip/src --root ../coil-deflate/src --root ../c
 
 | Path | Role |
 |------|------|
-| `src/gzip.hy` | The `gzip` module: `compress` / `decompress`, `Gzip`, `GzipError`, `crc32`, member header and trailer handling |
+| `src/gzip.coil` | The `gzip` module: `compress` / `decompress`, `Gzip`, `GzipError`, `crc32`, member header and trailer handling |
 | `tests/` | Round-trip, known-vector and error-case tests (`coil test`) |
 | `coil.toml` | spool manifest (`[package] name = "gzip"`, depends on `deflate`); coil does not read it |
 
